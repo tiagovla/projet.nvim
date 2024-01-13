@@ -40,7 +40,8 @@ function ProjetDatabase:update(projects)
     self._projects = projects
 end
 
-function ProjetDatabase:content()
+---@return Project[]
+function ProjetDatabase:projects()
     return self._projects
 end
 
