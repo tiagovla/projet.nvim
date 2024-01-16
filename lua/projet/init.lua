@@ -1,4 +1,4 @@
-local ProjetDatabase = require("projet.db")
+local ProjetDatabase = require("projet.database")
 local ProjetConfig = require("projet.config")
 local Editor = require("projet.editor")
 local utils = require("projet.utils")
@@ -21,7 +21,8 @@ function M.toggle_editor()
     local content = utils.parse_to_ui(db_content)
     local options = {
         content = content,
-        on_quit = function(ui_content)
+        on_select = function(ui_content) end,
+        on_save = function(ui_content)
             local edited_content = utils.parse_to_db(ui_content)
             M.db:update(edited_content)
             M.db:save()

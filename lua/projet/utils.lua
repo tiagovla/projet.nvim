@@ -1,6 +1,6 @@
-local U = {}
+local Utils = {}
 
-function U.parse_to_ui(db_content)
+function Utils.parse_to_ui(db_content)
     local content = {}
     for k, v in pairs(db_content) do
         content[k] = v.name .. " " .. v.path
@@ -8,7 +8,7 @@ function U.parse_to_ui(db_content)
     return content
 end
 
-function U.parse_to_db(ui_content)
+function Utils.parse_to_db(ui_content)
     local content = {}
     for _, v in pairs(ui_content) do
         if v ~= "" then
@@ -19,4 +19,10 @@ function U.parse_to_db(ui_content)
     return content
 end
 
-return U
+---@param str string
+---@return number
+function Utils.get_number_of_spaces(str)
+    return str:match("^%s*()") - 1
+end
+
+return Utils
