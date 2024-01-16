@@ -44,7 +44,7 @@ function Editor.toggle_edit_menu(options)
 
     vim.api.nvim_win_set_option(win_id, "number", true)
     vim.api.nvim_buf_set_name(buf, "project-editor")
-    vim.api.nvim_win_set_option(win_id, "filetype", "project")
+    vim.api.nvim_win_set_option(win_id, "filetype", "projet")
     vim.api.nvim_win_set_option(win_id, "buftype", "acwrite")
     vim.api.nvim_win_set_option(win_id, "bufhidden", "delete")
     vim.api.nvim_buf_set_lines(window_info.bufnr, 0, -1, false, options.content)
