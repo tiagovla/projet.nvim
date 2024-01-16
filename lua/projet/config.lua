@@ -1,4 +1,4 @@
----@class ProjectConfig
+---@class ProjetConfig
 ---@field on_enter fun()?
 ---@field database_path string?
 
@@ -10,7 +10,7 @@ local config = {
     database_path = vim.fs.joinpath(vim.fn.stdpath("data"), "project.json"),
 }
 
----@param user_config ProjectConfig
+---@param user_config ProjetConfig
 function ProjetConfig:__call(user_config)
     for k, v in pairs(user_config) do
         config[k] = v
