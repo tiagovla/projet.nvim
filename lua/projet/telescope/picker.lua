@@ -16,8 +16,7 @@ local picker = function(opts, projects)
             finder = finder(opts, projects),
             sorter = conf.generic_sorter(opts),
             attach_mappings = function(prompt_bufnr, map)
-                map("n", "f", _actions.enhanced_select_action("find_files", cd_on_select))
-                map("n", "g", _actions.enhanced_select_action("live_grep", cd_on_select))
+                map("i", "<s-cr>", _actions.enhanced_select_action("live_grep", cd_on_select))
                 actions.select_default:replace(_actions.enhanced_select_action("find_files", cd_on_select))
                 return true
             end,
