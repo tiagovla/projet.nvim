@@ -1,5 +1,4 @@
 ---@class ProjetConfig
----@field on_enter fun()?
 ---@field database_path string?
 ---@field mappings table?
 
@@ -9,7 +8,6 @@ ProjetConfig.__index = ProjetConfig
 local Editor = require("projet.editor")
 
 local config = {
-    on_enter = function() end,
     database_path = vim.fs.joinpath(vim.fn.stdpath("data"), "project.json"),
     mappings = {
         { "n", "q", Editor.close },

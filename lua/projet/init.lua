@@ -5,6 +5,17 @@ local utils = require("projet.utils")
 
 local M = {}
 
+Editor.setup({
+    on_validate = function(ui_content)
+        return utils.validate_content(ui_content)
+    end,
+    on_save = function(ui_content)
+        local edited_content = utils.parse_to_db(ui_content)
+        M.db:update(edited_content)
+        M.db:save()
+    end,
+})
+
 ---@param user_config table
 function M.setup(user_config)
     ProjetConfig(user_config)
@@ -16,14 +27,6 @@ function M.toggle_editor()
     local content = utils.parse_to_ui(db_content)
     local options = {
         content = content,
-        on_validate = function(ui_content)
-            return utils.validate_content(ui_content)
-        end,
-        on_save = function(ui_content)
-            local edited_content = utils.parse_to_db(ui_content)
-            M.db:update(edited_content)
-            M.db:save()
-        end,
         mappings = ProjetConfig.mappings,
     }
     Editor.toggle_edit_menu(options)

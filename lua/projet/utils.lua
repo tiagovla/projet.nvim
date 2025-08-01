@@ -37,7 +37,7 @@ function Utils.validate_content(ui_content)
     end
     local valid_content = {}
     for _, v in pairs(result) do
-        table.insert(valid_content, { line = v.line, valid = folder_exists(v.path) })
+        table.insert(valid_content, { line = v.line, valid = folder_exists(v.path), path = v.path, name = v.name })
     end
     return valid_content
 end

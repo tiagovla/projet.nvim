@@ -1,5 +1,10 @@
 local popup = require("plenary.popup")
-local Editor = { state = { win_id = nil } }
+local Editor = { state = { win_id = nil }, on_validate = function(_) end, on_save = function(_) end }
+
+function Editor.setup(events)
+    Editor.on_validate = events.on_validate or Editor.on_validate
+    Editor.on_save = events.on_save or Editor.on_save
+end
 
 function Editor.is_open()
     return Editor.state.win_id ~= nil and vim.api.nvim_win_is_valid(Editor.state.win_id)
@@ -13,10 +18,14 @@ function Editor.close()
 end
 
 function Editor.select(callback)
-    local linenr = vim.api.nvim_win_get_cursor(0)[1]  -- current line number (1-based)
+    local linenr = vim.api.nvim_win_get_cursor(0)[1]
     local line = vim.api.nvim_buf_get_lines(0, linenr - 1, linenr, false)[1]
-    local project, pwd = line:match("^(%S+)%s+(.+)$")
-    callback({project = project, path = pwd})
+    local validation = Editor.on_validate({ line })
+    if #validation > 0 then
+        if validation[1].valid then
+            callback({ name = validation[1].name, path = validation[1].path })
+        end
+    end
     Editor.close()
 end
 
@@ -69,14 +78,13 @@ function Editor.toggle_edit_menu(options)
         vim.keymap.set(mode, key, action, { buffer = buf, silent = true })
     end
 
-
     local group = vim.api.nvim_create_augroup("Project", {})
     vim.api.nvim_create_autocmd({ "BufWriteCmd" }, {
         buffer = buf,
         group = group,
         callback = function()
             local content = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-            options.on_save(content)
+            Editor.on_save(content)
         end,
     })
     local ns_id = vim.api.nvim_create_namespace("ProjetHighlight")
@@ -86,7 +94,7 @@ function Editor.toggle_edit_menu(options)
         group = group,
         callback = function()
             local content = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-            local validation = options.on_validate(content)
+            local validation = Editor.on_validate(content)
             local lines_to_highlight = {}
             for _, v in ipairs(validation) do
                 if not v.valid then
