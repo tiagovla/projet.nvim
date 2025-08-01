@@ -38,13 +38,13 @@ Here are the default configuration options:
 require("projet").setup({
   database_path = vim.fs.joinpath(vim.fn.stdpath("data"), "project.json"),
   mappings = {
-    { "n", "q", Editor.close },
-    { "n", "<ESC><ESC>", Editor.close },
+    { "n", "q", require("projet.editor").close },
+    { "n", "<ESC><ESC>", require("projet.editor").close },
     {
       "n",
       "<CR>",
       function()
-        Editor.select(function(project)
+        require("projet.editor").select(function(project)
           vim.cmd("cd " .. project.path)
         end)
       end,
