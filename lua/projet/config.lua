@@ -1,13 +1,29 @@
 ---@class ProjetConfig
 ---@field on_enter fun()?
 ---@field database_path string?
+---@field mappings table?
 
 local ProjetConfig = {}
 ProjetConfig.__index = ProjetConfig
 
+local Editor = require("projet.editor")
+
 local config = {
     on_enter = function() end,
     database_path = vim.fs.joinpath(vim.fn.stdpath("data"), "project.json"),
+    mappings = {
+        { "n", "q", Editor.close },
+        { "n", "<ESC><ESC>", Editor.close },
+        {
+            "n",
+            "<CR>",
+            function()
+                Editor.select(function(project)
+                    vim.cmd("cd " .. project.path)
+                end)
+            end,
+        },
+    },
 }
 
 ---@param user_config ProjetConfig

@@ -16,7 +16,6 @@ function M.toggle_editor()
     local content = utils.parse_to_ui(db_content)
     local options = {
         content = content,
-        on_select = function(ui_content) end,
         on_validate = function(ui_content)
             return utils.validate_content(ui_content)
         end,
@@ -25,6 +24,7 @@ function M.toggle_editor()
             M.db:update(edited_content)
             M.db:save()
         end,
+        mappings = ProjetConfig.mappings,
     }
     Editor.toggle_edit_menu(options)
 end

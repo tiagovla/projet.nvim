@@ -5,6 +5,21 @@ function Editor.is_open()
     return Editor.state.win_id ~= nil and vim.api.nvim_win_is_valid(Editor.state.win_id)
 end
 
+function Editor.close()
+    if Editor.is_open() then
+        vim.api.nvim_win_close(Editor.state.win_id, true)
+        Editor.state.win_id = nil
+    end
+end
+
+function Editor.select(callback)
+    local linenr = vim.api.nvim_win_get_cursor(0)[1]  -- current line number (1-based)
+    local line = vim.api.nvim_buf_get_lines(0, linenr - 1, linenr, false)[1]
+    local project, pwd = line:match("^(%S+)%s+(.+)$")
+    callback({project = project, path = pwd})
+    Editor.close()
+end
+
 local function create_window(options)
     options = options or {}
     local width = options.width or 100
@@ -48,15 +63,12 @@ function Editor.toggle_edit_menu(options)
     vim.api.nvim_win_set_option(win_id, "buftype", "acwrite")
     vim.api.nvim_win_set_option(win_id, "bufhidden", "delete")
     vim.api.nvim_buf_set_lines(window_info.bufnr, 0, -1, false, options.content)
-    vim.keymap.set("n", "q", function()
-        vim.api.nvim_win_close(win_id, true)
-    end, { buffer = buf, silent = true })
-    vim.keymap.set("n", "<ESC><ESC>", function()
-        vim.api.nvim_win_close(win_id, true)
-    end, { buffer = buf, silent = true })
-    vim.keymap.set("n", "<CR>", function()
-        vim.api.nvim_win_close(win_id, true)
-    end, { buffer = buf, silent = true })
+
+    for _, mapping in ipairs(options.mappings or {}) do
+        local mode, key, action = unpack(mapping)
+        vim.keymap.set(mode, key, action, { buffer = buf, silent = true })
+    end
+
 
     local group = vim.api.nvim_create_augroup("Project", {})
     vim.api.nvim_create_autocmd({ "BufWriteCmd" }, {
@@ -68,7 +80,7 @@ function Editor.toggle_edit_menu(options)
         end,
     })
     local ns_id = vim.api.nvim_create_namespace("ProjetHighlight")
-    vim.api.nvim_set_hl(0, "ProjetRed", { fg = "#FF0000" })
+    vim.api.nvim_set_hl(0, "ProjetRed", { link = "ErrorMsg" })
     vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
         buffer = buf,
         group = group,
