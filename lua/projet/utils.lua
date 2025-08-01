@@ -1,5 +1,7 @@
 local Utils = {}
 
+---@param db_content string
+---@return table
 function Utils.parse_to_ui(db_content)
     local content = {}
     for k, v in pairs(db_content) do
@@ -8,6 +10,8 @@ function Utils.parse_to_ui(db_content)
     return content
 end
 
+---@param ui_content table
+---@return table
 function Utils.parse_to_db(ui_content)
     local content = {}
     for n, v in pairs(ui_content) do
@@ -19,6 +23,8 @@ function Utils.parse_to_db(ui_content)
     return content
 end
 
+---@param ui_content table
+---@return table
 function Utils.validate_content(ui_content)
     local ok, result = pcall(Utils.parse_to_db, ui_content)
     if not ok then

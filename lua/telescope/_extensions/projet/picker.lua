@@ -1,7 +1,7 @@
-local _actions = require("projet.telescope.actions")
+local _actions = require("telescope._extensions.projet.actions")
 local actions = require("telescope.actions")
 local conf = require("telescope.config").values
-local finder = require("projet.telescope.finder")
+local finder = require("telescope._extensions.projet.finder")
 local pickers = require("telescope.pickers")
 
 local function cd_on_select(project)

@@ -11,11 +11,6 @@ function M.setup(user_config)
     M.db = ProjetDatabase:new(ProjetConfig.database_path)
 end
 
-function M.prompt()
-    local projects = M.db:load():projects()
-    require("projet.telescope").prompt({}, projects)
-end
-
 function M.toggle_editor()
     local db_content = M.db:load():projects()
     local content = utils.parse_to_ui(db_content)

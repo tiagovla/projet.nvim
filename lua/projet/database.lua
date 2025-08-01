@@ -1,6 +1,7 @@
 ---@class ProjetDatabase
 ---@field file_name string
 ---@field _content Project[]
+---@field projects Project[]
 
 local ProjetDatabase = {}
 ProjetDatabase.__index = ProjetDatabase
