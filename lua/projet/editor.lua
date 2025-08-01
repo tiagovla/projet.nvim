@@ -1,4 +1,5 @@
 local popup = require("plenary.popup")
+local Project = require("projet.project")
 local Editor = { state = { win_id = nil }, on_validate = function(_) end, on_save = function(_) end }
 
 function Editor.setup(events)
@@ -23,7 +24,8 @@ function Editor.select(callback)
     local validation = Editor.on_validate({ line })
     if #validation > 0 then
         if validation[1].valid then
-            callback({ name = validation[1].name, path = validation[1].path })
+            local project = Project:new(validation[1].name, validation[1].path)
+            callback(project)
         end
     end
     Editor.close()

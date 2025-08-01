@@ -7,14 +7,14 @@ Projet is a minimalist tool for managing your Neovim projects, with just enough 
 ## 💡 What is it?
 
 Your project manager is simply a list stored in a buffer.
-Each line contains a project tag (a short name) followed by the full path to
+Each line contains a project tag (a short name) followed by the path to
 the project directory, separated by a space:
 ```text
-super-secret /home/user/dev/super-secret
-coolbeans /home/user/dev/coolbeans
-dotfiles /home/user/.dotfiles
-blog /home/user/projects/my-tech-blog
-projet.nvim /home/user/.config/nvim/lua/projet
+super-secret ~/dev/super-secret
+coolbeans ~/dev/coolbeans
+dotfiles ~/.dotfiles
+blog ~/projects/my-tech-blog
+projet.nvim ~/.config/nvim/lua/projet
 telescope-fork /home/user/opensource/telescope.nvim
 cv /home/user/Documents/resume-latex
 data-crunch /home/user/work/data-cruncher

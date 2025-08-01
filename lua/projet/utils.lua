@@ -32,7 +32,8 @@ function Utils.validate_content(ui_content)
         return nil
     end
     local function folder_exists(path)
-        local stat = vim.loop.fs_stat(path)
+        local expanded = vim.fn.expand(path)
+        local stat = vim.loop.fs_stat(expanded)
         return stat and stat.type == "directory"
     end
     local valid_content = {}
