@@ -1,4 +1,4 @@
-# projet.nvim
+![banner](assets/banner.svg)
 
 **It’s a project manager without the complexity — so we dropped the “c”.**
 
