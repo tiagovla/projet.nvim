@@ -51,7 +51,7 @@ function Editor.toggle_edit_menu(options)
     vim.keymap.set("n", "q", function()
         vim.api.nvim_win_close(win_id, true)
     end, { buffer = buf, silent = true })
-    vim.keymap.set("n", "<ESC>", function()
+    vim.keymap.set("n", "<ESC><ESC>", function()
         vim.api.nvim_win_close(win_id, true)
     end, { buffer = buf, silent = true })
     vim.keymap.set("n", "<CR>", function()
@@ -65,6 +65,26 @@ function Editor.toggle_edit_menu(options)
         callback = function()
             local content = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
             options.on_save(content)
+        end,
+    })
+    local ns_id = vim.api.nvim_create_namespace("ProjetHighlight")
+    vim.api.nvim_set_hl(0, "ProjetRed", { fg = "#FF0000" })
+    vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
+        buffer = buf,
+        group = group,
+        callback = function()
+            local content = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+            local validation = options.on_validate(content)
+            local lines_to_highlight = {}
+            for _, v in ipairs(validation) do
+                if not v.valid then
+                    table.insert(lines_to_highlight, v.line)
+                end
+            end
+            vim.api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+            for _, linenr in ipairs(lines_to_highlight) do
+                vim.api.nvim_buf_add_highlight(0, ns_id, "ProjetRed", linenr - 1, 0, -1)
+            end
         end,
     })
 end

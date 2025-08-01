@@ -10,13 +10,30 @@ end
 
 function Utils.parse_to_db(ui_content)
     local content = {}
-    for _, v in pairs(ui_content) do
+    for n, v in pairs(ui_content) do
         if v ~= "" then
             local project, pwd = v:match("^(%S+)%s+(.+)$")
-            table.insert(content, { name = project, path = pwd })
+            table.insert(content, { name = project, path = pwd, line = n })
         end
     end
     return content
+end
+
+function Utils.validate_content(ui_content)
+    local ok, result = pcall(Utils.parse_to_db, ui_content)
+    if not ok then
+        vim.notify("Error parsing content: " .. result, vim.log.levels.ERROR)
+        return nil
+    end
+    local function folder_exists(path)
+        local stat = vim.loop.fs_stat(path)
+        return stat and stat.type == "directory"
+    end
+    local valid_content = {}
+    for _, v in pairs(result) do
+        table.insert(valid_content, { line = v.line, valid = folder_exists(v.path) })
+    end
+    return valid_content
 end
 
 ---@param str string

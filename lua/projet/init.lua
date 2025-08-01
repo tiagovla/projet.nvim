@@ -22,6 +22,9 @@ function M.toggle_editor()
     local options = {
         content = content,
         on_select = function(ui_content) end,
+        on_validate = function(ui_content)
+            return utils.validate_content(ui_content)
+        end,
         on_save = function(ui_content)
             local edited_content = utils.parse_to_db(ui_content)
             M.db:update(edited_content)
