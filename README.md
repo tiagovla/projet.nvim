@@ -1,7 +1,26 @@
 # projet.nvim
 
-**A simple floating project manager for Neovim.**  
-> _“Projet” means project in French — there is no typo!_
+**It’s a project manager without the complexity — so we dropped the “c”.**
+
+Projet is a minimalist tool for managing your Neovim projects, with just enough French to feel fancy.
+
+## 💡 What is it?
+
+Your project manager is simply a list stored in a buffer.
+Each line contains a project tag (a short name) followed by the full path to
+the project directory, separated by a space:
+```text
+super-secret /home/user/dev/super-secret
+coolbeans /home/user/dev/coolbeans
+dotfiles /home/user/.dotfiles
+blog /home/user/projects/my-tech-blog
+projet.nvim /home/user/.config/nvim/lua/projet
+telescope-fork /home/user/opensource/telescope.nvim
+cv /home/user/Documents/resume-latex
+data-crunch /home/user/work/data-cruncher
+school-backend /home/user/repos/school-api
+```
+That's it!
 
 ---
 
@@ -10,7 +29,7 @@
 - 🪟 Floating buffer interface to manage and switch between projects
 - 🔍 Telescope integration: `:Telescope projet`
 - 🛠️ Customizable key mappings and behavior
-- 📁 Automatically change the working directory (`:cd`) when selecting a project or your own action
+- 📁 Choose your own action when selecting a project
 - 🧩 Can be used standalone, with Telescope, or integrated into any other picker or UI
 
 ---
@@ -45,7 +64,7 @@ require("projet").setup({
       "<CR>",
       function()
         require("projet.editor").select(function(project)
-          vim.cmd("cd " .. project.path)
+          vim.cmd("cd " .. project.path) -- you might want to use a picker
         end)
       end,
     },
@@ -70,12 +89,6 @@ Or bind it to a key in your config:
 ```lua
 vim.keymap.set("n", "<leader>p", require("projet").toggle_editor)
 ```
-The floating editor expects lines in the format:
-```txt
-super-secret ~/dev/super-secret
-coolbeans ~/dev/coolbeans
-```
-That's it!
 
 ### Telescope Integration
 
