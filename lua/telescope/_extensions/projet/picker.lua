@@ -5,7 +5,7 @@ local finder = require("telescope._extensions.projet.finder")
 local pickers = require("telescope.pickers")
 
 local function cd_on_select(project)
-    vim.cmd("cd " .. project.path)
+    vim.cmd("bcd " .. project.path)
 end
 
 local picker = function(opts, projects)

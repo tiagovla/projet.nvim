@@ -64,7 +64,7 @@ require("projet").setup({
       "<CR>",
       function()
         require("projet.editor").select(function(project)
-          vim.cmd("cd " .. project.path) -- you might want to use a picker
+          vim.cmd("bcd " .. project.path) -- you might want to use a picker
         end)
       end,
     },
