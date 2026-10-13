@@ -8,7 +8,7 @@ ProjetDatabase.__index = ProjetDatabase
 
 ---@param filename string
 function ProjetDatabase:new(filename)
-    return setmetatable({ file_name = filename, _content = {} }, self)
+    return setmetatable({ file_name = filename, _projects = {} }, self)
 end
 
 ---@return ProjetDatabase
@@ -19,7 +19,7 @@ function ProjetDatabase:load()
         return self
     end
     ok, json_content = pcall(vim.fn.json_decode, file_content)
-    if not ok then
+    if not ok or type(json_content) ~= "table" then
         vim.print("Error decoding json file: " .. self.file_name)
         return self
     end
